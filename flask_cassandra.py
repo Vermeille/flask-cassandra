@@ -50,13 +50,13 @@ class CassandraCluster(object):
         else:
             app.teardown_request(self.teardown)
 
-    def connect(self):
+    def connect(self, **kwargs):
         log.debug("Connecting to CASSANDRA NODES {}".format(current_app.config['CASSANDRA_NODES']))
         if self.cluster is None:
             if isinstance(current_app.config['CASSANDRA_NODES'], (list, tuple)):
-                self.cluster = Cluster(current_app.config['CASSANDRA_NODES'])
+                self.cluster = Cluster(current_app.config['CASSANDRA_NODES'], **kwargs)
             elif isinstance(current_app.config['CASSANDRA_NODES'], (str, unicode)):
-                self.cluster = Cluster([current_app.config['CASSANDRA_NODES']])
+                self.cluster = Cluster([current_app.config['CASSANDRA_NODES']], **kwargs)
             else:
                 raise TypeError("CASSANDRA_NODES must be defined as a list, tuple, string, or unicode object.")
 
